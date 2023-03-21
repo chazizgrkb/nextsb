@@ -1,0 +1,175 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model bans {
+  autoint Int    @id @default(autoincrement())
+  userid  Int
+  reason  String @db.Text
+}
+
+model channel_comments {
+  comment_id Int    @id @default(autoincrement())
+  id         String @db.Text
+  reply_to   BigInt @default(0)
+  comment    String @db.Text
+  author     BigInt
+  date       BigInt
+  deleted    Int    @db.TinyInt
+}
+
+model comments {
+  comment_id BigInt @id @default(autoincrement())
+  id         String @db.Text
+  reply_to   BigInt @default(0)
+  comment    String @db.Text
+  author     BigInt
+  date       BigInt
+  deleted    Int    @db.TinyInt
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model favorites {
+  uid      Int
+  user_id  Int
+  video_id String @db.Text
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model ipbans {
+  ip     String @default("0.0.0.0") @db.VarChar(45)
+  reason String @default("<em>No reason specified</em>") @db.VarChar(255)
+
+  @@ignore
+}
+
+model music {
+  ID       Int    @id @default(autoincrement())
+  music_id String @db.VarChar(11)
+  title    String @db.Text
+  author   Int
+  time     Int
+  file     String @db.Text
+}
+
+model news {
+  id            Int     @id @default(autoincrement())
+  title         String  @default("Lorem ipsum") @db.VarChar(128)
+  text          String? @db.Text
+  time          BigInt? @default(0)
+  redirect      String? @db.VarChar(256)
+  author_userid Int     @default(1)
+}
+
+model notifications {
+  id        Int  @id @default(autoincrement())
+  type      Int
+  level     Int?
+  recipient Int
+  sender    Int
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model passwordresets {
+  id     String @db.VarChar(64)
+  user   Int
+  time   Int
+  active Int    @default(1) @db.TinyInt
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model rating {
+  user   BigInt @db.UnsignedBigInt
+  video  BigInt @db.UnsignedBigInt
+  rating Int    @default(1) @db.UnsignedTinyInt
+
+  @@ignore
+}
+
+model revisions {
+  id          Int    @id @default(autoincrement())
+  page        String @db.Text
+  revision    Int    @default(1)
+  size        Int    @default(0)
+  sizediff    Int    @default(0)
+  time        Int    @default(dbgenerated("(current_timestamp())"))
+  description String @default("No description") @db.Text
+  author      Int
+  comment_id  Int    @default(0)
+  type        Int    @default(0)
+}
+
+model subscriptions {
+  uid  Int @id @default(autoincrement())
+  id   Int
+  user Int
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model tag_index {
+  video_id Int
+  tag_id   Int
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model tag_meta {
+  tag_id    Int
+  name      String @db.Text
+  latestUse BigInt
+
+  @@ignore
+}
+
+model users {
+  id          BigInt  @id @default(autoincrement())
+  name        String  @db.VarChar(128)
+  email       String  @db.VarChar(128)
+  password    String  @db.VarChar(128)
+  token       String  @db.VarChar(128)
+  joined      BigInt  @default(0) @db.UnsignedBigInt
+  lastview    BigInt  @default(0) @db.UnsignedBigInt
+  lastpost    Int     @default(0) @db.UnsignedInt
+  title       String  @db.Text
+  about       String? @db.Text
+  customcolor String? @default("#523bb8") @db.VarChar(7)
+  language    String  @default("en-US") @db.VarChar(10)
+  avatar      Boolean @default(false)
+  ip          String  @default("999.999.999.999") @db.VarChar(32)
+  u_flags     Int     @default(0) @db.UnsignedTinyInt
+  powerlevel  Int     @default(1) @db.UnsignedTinyInt
+  group_id    Int     @default(3)
+}
+
+model videos {
+  id               Int     @id @default(autoincrement()) @db.UnsignedInt
+  video_id         String  @db.VarChar(11)
+  title            String  @db.VarChar(128)
+  description      String? @db.Text
+  author           Int     @db.UnsignedInt
+  time             Int     @default(0) @db.UnsignedInt
+  most_recent_view Int     @default(0) @db.UnsignedInt
+  views            Int     @default(0) @db.UnsignedInt
+  flags            Int     @default(0) @db.UnsignedTinyInt
+  category_id      Int?    @default(0)
+  videofile        String? @db.Text
+  videolength      Int?    @db.UnsignedInt
+  tags             String? @db.Text
+  post_type        Int     @default(0)
+}
+
+model views {
+  uid      Int    @id @default(autoincrement())
+  video_id String @db.Text
+  user     String @db.Text
+}
