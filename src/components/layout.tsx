@@ -14,7 +14,7 @@ export default function Layout({ children }: any) {
 			<header>
 				<Navbar />
 			</header>
-			<main className="container mx-auto">
+			<main className="container mx-auto mt-2">
 				{children}
 				<Footer />
 			</main>
