@@ -7,6 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// old legacy opensb stuff.
+
 model bans {
   autoint Int    @id @default(autoincrement())
   userid  Int
@@ -153,10 +155,11 @@ model users {
 
 model videos {
   id               Int     @id @default(autoincrement()) @db.UnsignedInt
-  video_id         String  @db.VarChar(11)
+  video_id         String  @db.VarChar(36)
   title            String  @db.VarChar(128)
   description      String? @db.Text
-  author           Int     @db.UnsignedInt
+  author           user    @relation(fields: [authorId], references: [id])
+  authorId         String  @default("welpshit")
   time             Int     @default(0) @db.UnsignedInt
   most_recent_view Int     @default(0) @db.UnsignedInt
   views            Int     @default(0) @db.UnsignedInt
@@ -172,4 +175,50 @@ model views {
   uid      Int    @id @default(autoincrement())
   video_id String @db.Text
   user     String @db.Text
+}
+
+model account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model user {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      account[]
+  sessions      session[]
+  posts         videos[]
+}
+
+model verification_token {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

@@ -11,8 +11,8 @@ function Home({ data }: any) {
             </div>
             {data.map((post: any) => (
                 <div className="flex justify-start gap-3 my-2" key={post}>
-                    <div>
-                        <img src="thumbnail.png" className="h-48 rounded-lg" alt="Thumbnail"></img>
+                    <div className="shrink-0">
+                        <img src={'https://qobo-grkb.b-cdn.net/' + post.videofile} className="h-48 rounded-lg" alt="Thumbnail"></img>
                     </div>
                     <div>
                         <a href={`/post/${encodeURIComponent(post.video_id)}`} className="text-lg font-semibold">
