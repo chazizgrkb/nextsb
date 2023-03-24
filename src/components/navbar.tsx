@@ -1,28 +1,18 @@
-// @ts-ignore
+import Button from './button'
+
 export default function Navbar() {
 	return (
 		<>
-			<nav className="navbar navbar-expand-lg bg-body-tertiary">
-				<div className="container-fluid">
-					<a className="navbar-brand" href="#">Qobo</a>
-					<button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-					        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-					        aria-expanded="false" aria-label="Toggle navigation">
-						<span className="navbar-toggler-icon"></span>
-					</button>
-					<div className="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul className="navbar-nav me-auto mb-2 mb-lg-0">
-							<li className="nav-item">
-								<a className="nav-link" href="#">Posts</a>
-							</li>
-							<li className="nav-item">
-								<a className="nav-link" href="#">Community</a>
-							</li>
-						</ul>
-						<form className="d-flex" role="search">
-							<input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"></input>
-								<button className="btn btn-outline-success" type="submit">Search</button>
-						</form>
+			<nav className="w-full bg-slate-50 border-b border-solid border-gray-200 p-3 z-50 backdrop-blur-sm">
+				<div className="flex flex-auto gap-6">
+					<a href="/">
+					<img src="/qobo.svg" className="flex flex-none items-center w-24" alt="Qobo"></img>
+					</a>
+					<div className="flex flex-auto items-center">
+						<input type="text" className="placeholder:text-slate-400 p-1 bg-white border border-slate-300 rounded-md focus:border-pink-300 outline-none focus:ring-1 focus:ring-pink-300" placeholder="Search"></input>
+					</div>
+					<div className="flex items-center">
+						<Button link="/login">Login</Button>
 					</div>
 				</div>
 			</nav>
