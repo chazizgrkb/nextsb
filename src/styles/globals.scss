@@ -16,4 +16,8 @@
   .menu-item {
     @apply text-gray-900 hover:bg-pink-100 px-2 py-1 m-1;
   }
+
+  .thumbnail {
+    @apply h-48 rounded-lg aspect-video;
+  }
 }

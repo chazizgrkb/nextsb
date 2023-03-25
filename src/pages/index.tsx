@@ -1,5 +1,6 @@
 import {PrismaClient} from "@prisma/client";
 import {PostType} from '@/lib/enums'
+import Thumbnail from '@/components/thumbnail'
 
 const prisma = new PrismaClient()
 
@@ -9,7 +10,7 @@ function Home({ data }: any) {
             {data.map((post: any) => (
                 <div className="flex justify-start gap-3 my-2" key={post}>
                     <div className="shrink-0">
-                        <img src={'https://qobo-grkb.b-cdn.net/' + post.videofile} className="h-48 rounded-lg" alt="Thumbnail"></img>
+                        <Thumbnail data={post.videofile} type={post.post_type}/>
                     </div>
                     <div>
                         <a href={`/post/${encodeURIComponent(post.video_id)}`} className="text-lg font-semibold">
@@ -29,6 +30,9 @@ export const getServerSideProps = async () => {
         where: {
             flags: 0,
         },
+        orderBy: {
+            id: 'desc',
+        }
     })
     return { props: { data } }
 }

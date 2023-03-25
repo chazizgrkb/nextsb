@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import {PrismaClient} from "@prisma/client"
 import { BunnyCdnStream } from 'bunnycdn-stream'
-import VideoJS from '../../components/video.js'
+import VideoJS from '@/components/video.js'
 import videojs from "video.js";
 import {useRef} from "react";
 import Moment from 'react-moment'
