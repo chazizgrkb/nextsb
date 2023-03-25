@@ -33,9 +33,9 @@ const handler = async (
 	try {
 		const { fields, files } = await parseForm(req);
 
-		const file = files.media;
-		const title = files.title;
-		let url = Array.isArray(file) ? file.map((f) => f.filepath) : file.newFilename;
+		const uploadFile = files.media;
+		const uploadTitle = fields.title;
+		let url = Array.isArray(uploadFile) ? uploadFile.map((f) => f.filepath) : uploadFile.newFilename;
 
 		const session = await getSession({ req })
 
@@ -49,13 +49,13 @@ const handler = async (
 		const post = await db.videos.create({
 			data: {
 				video_id: randomUUID(),
-				title: "Title",
+				title: uploadTitle,
 				time: Math.floor(Date.now() / 1000),
 				most_recent_view: Math.floor(Date.now() / 1000),
 				views: 0,
 				flags: 0,
 				post_type: 2,
-				videofile: file.newFilename,
+				videofile: uploadFile.newFilename,
 				authorId: session?.user?.id,
 			},
 		})

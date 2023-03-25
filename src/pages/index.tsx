@@ -6,7 +6,7 @@ function Home({ data }: any) {
     return (
         <>
             {data.map((post: any) => (
-                <div className="flex justify-start gap-3 my-2" key={post}>
+                <div className="flex justify-start gap-3 my-2" key={post.video_id}>
                     <div className="shrink-0">
                         <Thumbnail data={post.videofile} type={post.post_type}/>
                     </div>
@@ -15,7 +15,7 @@ function Home({ data }: any) {
                             {post.title}
                         </a>
                         <p className="text-gray-500">{post.description}</p>
-                        <p className="text-gray-400 text-sm">{PostType[post.post_type]}</p>
+                        <p className="text-gray-400 text-sm">{post.author.name} • {PostType[post.post_type]}</p>
                     </div>
                 </div>
             ))}
@@ -30,7 +30,10 @@ export const getServerSideProps = async () => {
         },
         orderBy: {
             id: 'desc',
-        }
+        },
+        include: {
+            author: true,
+        },
     })
     return { props: { data } }
 }
