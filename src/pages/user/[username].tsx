@@ -1,8 +1,4 @@
-import {PrismaClient} from "@prisma/client";
-import Home from "@/pages";
 import {db} from "@/lib/db";
-
-const prisma = new PrismaClient()
 
 function Profile({ data }: any) {
 	return (

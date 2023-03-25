@@ -1,21 +1,26 @@
 import { BunnyCdnStream } from 'bunnycdn-stream'
 import VideoJS from '@/components/video.js'
 import videojs from "video.js";
-import {useRef} from "react";
-import Moment from 'react-moment'
+import {useEffect, useRef, useState} from "react";
 import {PostType} from '@/lib/enums'
 import {db} from "@/lib/db";
+import moment from "moment";
 
 function PostPage({ data, file }: any) {
+	// should fix hydration bug i got once, -grkb 03/25/2023
+	const [time, setTime] = useState('Sometime ago')
+	useEffect(() => setTime(moment(data.time * 1000).fromNow()), [data.time])
+
 	return (
 		<>
 			<div className="grid grid-cols-2 gap-3" key={data}>
 				<div>
 					<div>
-						<Post data={data} file={file}>Fuck</Post>
+						<PostAuthor author={data.author}/>
+						<Post post_type={data.post_type} file={file}/>
 						<h1 className="text-xl font-bold">{ data.title }</h1>
 						<p className="text-gray-500">
-							A number of views • <Moment unix fromNow>{ data.time }</Moment>
+							A number of views • { time }
 						</p>
 					</div>
 				</div>
@@ -27,9 +32,23 @@ function PostPage({ data, file }: any) {
 	)
 }
 
-function Post({ data, file }: any) {
+function PostAuthor({ author }: any) {
+	return (
+		<>
+			<div className="flex gap-1 items-center mb-2">
+				<img src={ author.image } className="w-8 rounded-full" alt={ author.name }/>
+				<div className="flex gap-1 items-baseline">
+					<a href={ "/user/" + author.name }>{ author.name }</a>
+					<p className="text-xs text-gray-400">1,337,420 followers</p>
+				</div>
+			</div>
+		</>
+	)
+}
+
+function Post({ post_type, file }: any) {
 	const playerRef = useRef(null);
-	if (data.post_type == PostType.Video) {
+	if (post_type == PostType.Video) {
 
 		const videoJsOptions = {
 			autoplay: false,
@@ -60,7 +79,7 @@ function Post({ data, file }: any) {
 				<VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
 			</>
 		)
-	} else if (data.post_type == PostType.Image) {
+	} else if (post_type == PostType.Image) {
 		return (
 			<>
 				<img src={ file } className="w-full"/>
@@ -78,6 +97,9 @@ export const getServerSideProps = async (context: any) => {
 	const data = await db.videos.findFirst({
 		where: {
 			video_id: context.query.pid,
+		},
+		include: {
+			author: true,
 		},
 	})
 	let file;
