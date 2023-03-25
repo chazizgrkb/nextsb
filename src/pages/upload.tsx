@@ -1,5 +1,3 @@
-import fs from 'fs';
-import {PrismaClient} from "@prisma/client";
 import {ChangeEvent, useState} from "react";
 
 function Upload() {
@@ -67,7 +65,7 @@ function Upload() {
 			<div className="bg-yellow-200 px-3 py-3 rounded-l mb-2">
 				Uploading images is currently only supported.
 			</div>
-			<div className="bg-slate-50 border border-solid border-gray-200 p-5 rounded-l">
+			<div className="bg-gray-50 border border-solid border-gray-200 p-5 rounded-l">
 				<h1 className="font-semibold text-2xl">Upload</h1>
 				<form className="grid grid-cols-1 gap-4 grid-flow-row" action="" encType='multipart/form-data'>
 					<input type="text" id="title" name="title" placeholder="Title" className="input-text" onChange={e => setTitle(e.target.value)} />
@@ -77,12 +75,6 @@ function Upload() {
 			</div>
 		</>
 	)
-}
-
-export async function getStaticProps(context: any) {
-	return {
-		props: {}, // will be passed to the page component as props
-	}
 }
 
 export default Upload

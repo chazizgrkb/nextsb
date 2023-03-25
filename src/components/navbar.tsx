@@ -82,7 +82,7 @@ function NavbarUser() {
 export default function Navbar() {
 	return (
 		<>
-			<nav className="w-full bg-slate-50 border-b border-solid border-gray-200 p-3 z-50 backdrop-blur-sm">
+			<nav className="w-full bg-gray-50 border-b border-solid border-gray-200 p-3 z-50 backdrop-blur-sm">
 				<div className="flex flex-auto gap-6">
 					<div className="flex items-center gap-5">
 					<a href="/">

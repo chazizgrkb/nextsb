@@ -1,5 +1,6 @@
 import {PrismaClient} from "@prisma/client";
 import Home from "@/pages";
+import {db} from "@/lib/db";
 
 const prisma = new PrismaClient()
 
@@ -21,7 +22,7 @@ function Profile({ data }: any) {
 }
 
 export const getServerSideProps = async (context: any) => {
-	const data = await prisma.user.findFirst({
+	const data = await db.user.findFirst({
 		where: {
 			name: context.query.username,
 		},

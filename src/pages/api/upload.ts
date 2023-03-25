@@ -3,9 +3,9 @@
 
 import { parseForm, FormidableError } from "@/lib/parse-form";
 import {NextApiRequest, NextApiResponse} from "next";
-import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import {getSession} from "next-auth/react";
+import {db} from "@/lib/db";
 
 export const config = {
 	api: {
@@ -31,8 +31,6 @@ const handler = async (
 		return;
 	}
 	try {
-		const prisma = new PrismaClient()
-
 		const { fields, files } = await parseForm(req);
 
 		const file = files.media;
@@ -48,7 +46,7 @@ const handler = async (
 			error: null,
 		});
 
-		const post = await prisma.videos.create({
+		const post = await db.videos.create({
 			data: {
 				video_id: randomUUID(),
 				title: "Title",
@@ -58,7 +56,7 @@ const handler = async (
 				flags: 0,
 				post_type: 2,
 				videofile: file.newFilename,
-				authorId: session.user.id,
+				authorId: session?.user?.id,
 			},
 		})
 

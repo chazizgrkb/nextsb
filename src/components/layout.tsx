@@ -16,8 +16,10 @@ export default function Layout({ children }: any) {
 			</header>
 			<main className="container mx-auto mt-2">
 				{children}
-				<Footer />
 			</main>
+			<footer>
+				<Footer />
+			</footer>
 		</>
 	)
 }

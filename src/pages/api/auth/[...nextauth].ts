@@ -1,14 +1,10 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
-
-
+import { db } from '@/lib/db'
 
 export default NextAuth({
-	adapter: PrismaAdapter(prisma),
+	adapter: PrismaAdapter(db),
 	callbacks: {
 		session: async ({ session, token, user }) => {
 			if (session?.user) {

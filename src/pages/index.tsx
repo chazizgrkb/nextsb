@@ -1,8 +1,6 @@
-import {PrismaClient} from "@prisma/client";
 import {PostType} from '@/lib/enums'
 import Thumbnail from '@/components/thumbnail'
-
-const prisma = new PrismaClient()
+import { db } from '@/lib/db'
 
 function Home({ data }: any) {
     return (
@@ -26,7 +24,7 @@ function Home({ data }: any) {
 }
 
 export const getServerSideProps = async () => {
-    const data = await prisma.videos.findMany({
+    const data = await db.videos.findMany({
         where: {
             flags: 0,
         },

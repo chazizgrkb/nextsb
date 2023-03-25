@@ -1,14 +1,10 @@
-import { useRouter } from 'next/router'
-import {PrismaClient} from "@prisma/client"
 import { BunnyCdnStream } from 'bunnycdn-stream'
 import VideoJS from '@/components/video.js'
 import videojs from "video.js";
 import {useRef} from "react";
 import Moment from 'react-moment'
-
 import {PostType} from '@/lib/enums'
-
-const prisma = new PrismaClient()
+import {db} from "@/lib/db";
 
 function PostPage({ data, file }: any) {
 	return (
@@ -79,7 +75,7 @@ function Post({ data, file }: any) {
 }
 
 export const getServerSideProps = async (context: any) => {
-	const data = await prisma.videos.findFirst({
+	const data = await db.videos.findFirst({
 		where: {
 			video_id: context.query.pid,
 		},
@@ -95,7 +91,7 @@ export const getServerSideProps = async (context: any) => {
 	if (data?.post_type == PostType.Video) {
 		file = 'https://vz-05de22db-96d.b-cdn.net/a7dd915c-47aa-4ccc-adc2-2e62a7fcc473/playlist.m3u8'
 	} else {
-		file = 'https://qobo-grkb.b-cdn.net/' + data?.videofile
+		file = 'https://' + process.env.BUNNY_CDN_URL + '/' + data?.videofile
 	}
 
 	return { props: { data, file } }
