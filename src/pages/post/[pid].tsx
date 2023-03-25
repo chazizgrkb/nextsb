@@ -83,6 +83,13 @@ export const getServerSideProps = async (context: any) => {
 		},
 	})
 	let file;
+
+	if (!data) {
+		return {
+			notFound: true,
+		}
+	}
+
 	if (data?.post_type == 0) {
 		file = 'https://vz-05de22db-96d.b-cdn.net/a7dd915c-47aa-4ccc-adc2-2e62a7fcc473/playlist.m3u8'
 	} else {

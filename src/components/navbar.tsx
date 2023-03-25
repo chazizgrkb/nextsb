@@ -2,11 +2,10 @@ import Button from './button'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { useSession, signIn, signOut } from "next-auth/react"
+import { ArrowUpTrayIcon } from '@heroicons/react/24/solid'
 
 const links = [
 	{ href: '/account-settings', label: 'Account settings' },
-	{ href: '/support', label: 'Support' },
-	{ href: '/license', label: 'License' },
 	{ href: '/api/auth/signout', label: 'Sign out' },
 ]
 
@@ -27,13 +26,25 @@ function NavbarMenu() {
 				leaveFrom="transform opacity-100 scale-100"
 				leaveTo="transform opacity-0 scale-95"
 			>
-			<Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+			<Menu.Items className="absolute right-0 z-10 mt-2 w-72 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+				<Menu.Item
+					as="a"
+					href={"/user/" + session?.user?.name}
+					className="menu-item p-2 flex items-center gap-3">
+					<div>
+						<img src={ session?.user?.image } className="w-12 rounded-full" alt={ session?.user?.name }></img>
+					</div>
+					<div className="flex-auto">
+						<p className="font-semibold">{ session?.user?.name }</p>
+						<p className="text-gray-500 text-sm">{ session?.user?.email }</p>
+					</div>
+				</Menu.Item>
 				{links.map((link) => (
 					<Menu.Item
 						as="a"
 						key={link.href}
 						href={link.href}
-						className="text-gray-900 hover:bg-pink-100 block px-4 py-2 m-1 rounded text-sm"
+						className="menu-item block rounded text-sm"
 					>
 						{link.label}
 					</Menu.Item>
@@ -52,7 +63,7 @@ function NavbarUser() {
 		return (
 			<>
 				<div className="flex items-center gap-2">
-					<Button link="/upload">Upload</Button>
+					<a href="/upload"><ArrowUpTrayIcon className="h-6 w-6"/></a>
 					<NavbarMenu/>
 				</div>
 			</>
@@ -83,7 +94,7 @@ export default function Navbar() {
 					<div className="flex flex-auto">
 						<input type="text" className="input-text" placeholder="Search"></input>
 					</div>
-					<div className="flex items-center">
+					<div className="flex items-center gap-5">
 						<NavbarUser></NavbarUser>
 					</div>
 				</div>
