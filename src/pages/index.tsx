@@ -1,4 +1,5 @@
 import {PrismaClient} from "@prisma/client";
+import {PostType} from '@/lib/enums'
 
 const prisma = new PrismaClient()
 
@@ -15,6 +16,7 @@ function Home({ data }: any) {
                             {post.title}
                         </a>
                         <p className="text-gray-500">{post.description}</p>
+                        <p className="text-gray-400 text-sm">{PostType[post.post_type]}</p>
                     </div>
                 </div>
             ))}

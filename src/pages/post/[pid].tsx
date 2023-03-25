@@ -6,6 +6,8 @@ import videojs from "video.js";
 import {useRef} from "react";
 import Moment from 'react-moment'
 
+import {PostType} from '@/lib/enums'
+
 const prisma = new PrismaClient()
 
 function PostPage({ data, file }: any) {
@@ -31,7 +33,7 @@ function PostPage({ data, file }: any) {
 
 function Post({ data, file }: any) {
 	const playerRef = useRef(null);
-	if (data.post_type == 0) {
+	if (data.post_type == PostType.Video) {
 
 		const videoJsOptions = {
 			autoplay: false,
@@ -62,7 +64,7 @@ function Post({ data, file }: any) {
 				<VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
 			</>
 		)
-	} else if (data.post_type == 2) {
+	} else if (data.post_type == PostType.Image) {
 		return (
 			<>
 				<img src={ file } className="w-full"/>
@@ -90,7 +92,7 @@ export const getServerSideProps = async (context: any) => {
 		}
 	}
 
-	if (data?.post_type == 0) {
+	if (data?.post_type == PostType.Video) {
 		file = 'https://vz-05de22db-96d.b-cdn.net/a7dd915c-47aa-4ccc-adc2-2e62a7fcc473/playlist.m3u8'
 	} else {
 		file = 'https://qobo-grkb.b-cdn.net/' + data?.videofile
